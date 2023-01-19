@@ -1,6 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchRickAndMortyAPI } from './js/fetchApi.js';
 import { renderCharacters } from './js/renderCharacters';
+import { renderLocations } from './js/renderLocations';
 
 const form = document.querySelector('.js-search');
 const gallery = document.querySelector('.gallery');
@@ -19,7 +20,11 @@ function onSearch(evt) {
   query = evt.currentTarget.elements.query.value;
   fetchRickAndMortyAPI(query, page)
     .then(({ data }) => {
-      renderCharacters(data.results);
+      if (query === 'character') {
+        renderCharacters(data.results);
+      } else if (query === 'location') {
+        renderLocations(data.results);
+      }
       loadMoreBtn.hidden = false;
       loadMoreBtn.disabled = false;
 
@@ -29,11 +34,19 @@ function onSearch(evt) {
 }
 
 function onLoadMore() {
+  loadMoreBtn.disabled = true;
+  loadMoreBtn.textContent = 'Loading';
   page += 1;
   fetchRickAndMortyAPI(query, page)
     .then(({ data }) => {
-      renderCharacters(data.results);
+      if (query === 'character') {
+        renderCharacters(data.results);
+      } else if (query === 'location') {
+        renderLocations(data.results);
+      }
       loadMoreBtn.hidden = false;
+      loadMoreBtn.textContent = 'Load more';
+      loadMoreBtn.disabled = false;
       if (page === data.info.pages) {
         loadMoreBtn.hidden = true;
       }
