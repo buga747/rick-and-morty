@@ -1,7 +1,6 @@
 export { renderCharacters };
 
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.js-load-more');
 
 function renderCharacters(array) {
   const markup = array
@@ -27,5 +26,4 @@ function renderCharacters(array) {
     })
     .join('');
   gallery.insertAdjacentHTML('beforeend', markup);
-  loadMoreBtn.hidden = true;
 }
